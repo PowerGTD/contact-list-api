@@ -1,6 +1,7 @@
 import React from 'react';
 import {withRouter} from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { Context } from "../store/appContext.jsx";
 
 class Modal extends React.Component{
 	constructor(){
@@ -16,7 +17,7 @@ class Modal extends React.Component{
 				<div className="modal-dialog" role="document">
 					<div className="modal-content">
 						<div className="modal-header">
-							<h5 className="modal-title">Are you sure?</h5>
+							<h5 className="modal-title">Delete name?</h5>
 							{ (this.props.onClose) ?
 								<button onClick={() => this.props.onClose()} type="button" className="close" data-dismiss="modal" aria-label="Close">
 									<span aria-hidden="true">&times;</span>
@@ -25,12 +26,30 @@ class Modal extends React.Component{
 							}
 						</div>
 						<div className="modal-body">
-							<p>Warning: unknown consequences after this point... Kidding!</p>
+							<p>Are you sure you want to delete this BAMF?</p>
 						</div>
-						<div className="modal-footer">
-							<button type="button" className="btn btn-primary">Oh no!</button>
-							<button type="button" className="btn btn-secondary" data-dismiss="modal">Do it!</button>
-						</div>
+						<Context.Consumer>
+							{({ store, actions }) => {
+							return (
+								<div className="modal-footer">
+									<button type="button" 
+										className="btn btn-primary"
+										onClick={ () => {
+												this.props.onClose();
+										}}>No, keep them!
+									</button>
+									<button type="button" 
+										className="btn btn-secondary" 
+										data-dismiss="modal"
+										onClick={ () => {
+											actions.deleteItem(this.props.deleteName);
+											this.props.onClose();
+										}}>Do it!
+									</button>
+								</div>
+							);
+						}}
+						</Context.Consumer>
 					</div>
 				</div>
 			</div>
@@ -45,7 +64,8 @@ class Modal extends React.Component{
 Modal.propTypes = {
 	history: PropTypes.object,
 	onClose: PropTypes.func,
-	show: PropTypes.bool
+	show: PropTypes.bool,
+	deleteName: PropTypes.string
 };
 
 /**
