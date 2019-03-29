@@ -6,22 +6,22 @@ const getState = ({ getStore, setStore }) => {
 		actions: {
 			
 			apiFetch: () => {
-				fetch("https://assets.breatheco.de/apis/fake/contact/agenda/alejo")
+				fetch("https://contact-list-rest-powergtd.c9users.io/contact/all")
 				.then(res => res.json())
-				.then(res => setStore({ contacts: res }));
+				.then(res => setStore({ contacts: res.data }));
 			},
 			
 			addContact: (full_name, email, phone, address) => {
 				var tempStore = getStore();
 				var newContact = {
-					full_name,
-					email,
-					agenda_slug: "alejo",
-					address,
-					phone
+					"full_name": full_name,
+					"email": email,
+					"address": address,
+					"phone": phone,
+					"groups": []
 				};
-				fetch("https://assets.breatheco.de/apis/fake/contact/", {
-					method: 'PUT',
+				fetch("https://contact-list-rest-powergtd.c9users.io/contact", {
+					method: 'POST',
 					body: JSON.stringify(newContact),
 					headers:{
 					'Content-Type': 'application/json'
@@ -35,7 +35,7 @@ const getState = ({ getStore, setStore }) => {
 			},
 			deleteItem: (index) => {
 				var newStore = getStore();
-				fetch("https://assets.breatheco.de/apis/fake/contact/" + index, {
+				fetch("https://contact-list-rest-powergtd.c9users.io/contact/" + index, {
 					method: 'DELETE'
 				}).then(res => res.text())
 					.then(response => {

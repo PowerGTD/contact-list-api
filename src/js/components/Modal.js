@@ -65,7 +65,7 @@ Modal.propTypes = {
 	history: PropTypes.object,
 	onClose: PropTypes.func,
 	show: PropTypes.bool,
-	deleteName: PropTypes.string
+	deleteName: PropTypes.number
 };
 
 /**
